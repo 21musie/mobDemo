@@ -1,24 +1,22 @@
-import { StyleSheet,Text, View, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet,Text, View, ScrollView, SafeAreaView, SectionList } from "react-native";
 import contactList from './data.json';
+import AnimalList from './groupedData.json';
 import { StatusBar } from "expo-status-bar";
 export default function App (){
   return (
   <SafeAreaView style={styles.container}> 
-  <ScrollView style={styles.scrollView}>
-  {
-    contactList.map(contact=>{
-      return(
-        <View style={styles.card} key={contact.id}>
-        <Text style={styles.cardText}>{contact.name}</Text>
-        <Text style={styles.cardText}>{contact.phoneNumber} </Text>
-</View> 
+  <SectionList
+  sections={AnimalList}
+  renderItem={({item})=>{
+    return(
+      <View style={styles.card}>
+        <Text style={styles.cardText}{item}</Text>
+      </View>
     );
-  })}
-
-    </ScrollView>
+  }}
 </SafeAreaView>
 );
-}
+}   
 
 const styles=StyleSheet.create({
   container: {

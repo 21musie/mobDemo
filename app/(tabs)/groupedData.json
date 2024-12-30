@@ -1,0 +1,15 @@
+[{
+        "Type": "Terrestrial",
+        "data": ["Elephants", "Lions", "Zebra"]
+    },
+    {
+        "Type": "Aquatic",
+        "data": ["Fish", "Dolphins", "Octopuses"]
+    }, {
+        "Type": "Aerial",
+        "data": ["Birds", "Insects"]
+    }, {
+        "Type": "Amphibious",
+        "data": ["Frogs", "ThiSalamndaers"]
+    }
+]
