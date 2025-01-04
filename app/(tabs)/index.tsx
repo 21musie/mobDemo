@@ -64,25 +64,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
-  card: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    marginBottom: 16,
-  },
-  cardText: {
-    fontSize: 30,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    backgroundColor: '#f5f5f5',
-    padding: 8,
-  },
-});
