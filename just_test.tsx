@@ -105,5 +105,45 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+titleContainer: {
+flexDirection: 'row',
+alignItems: 'center',
+gap: 8,
+},
+formContainer: {
+padding: 16,
+gap: 12,
+},
+input: {
+borderWidth: 1,
+borderColor: '#ccc',
+borderRadius: 8,
+padding: 8,
+fontSize: 16,
+},
+genderContainer: {
+flexDirection: 'row',
+justifyContent: 'space-around',
+marginVertical: 8,
+},
+hobbiesContainer: {
+flexDirection: 'row',
+flexWrap: 'wrap',
+gap: 8,
+marginVertical: 8,
+},
+buttonContainer: {
+flexDirection: 'row',
+justifyContent: 'space-between',
+marginVertical: 8,
+},
+reactLogo: {
+height: 178,
+width: 290,
+bottom: 0,
+left: 0,
+position: 'absolute',
+},
+});
 
 //this is just a comment for reminder to implement animated loading
