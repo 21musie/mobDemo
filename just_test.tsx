@@ -145,3 +145,5 @@ left: 0,
 position: 'absolute',
 },
 });
+
+//this is just a comment for reminder to implement animated loading
