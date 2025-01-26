@@ -1,0 +1,57 @@
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+
+export default function WeatherApp() {
+  const [city, setCity] = useState(''); // State for city input
+  const [weather, setWeather] = useState(null); // State for weather data
+
+  const fetchWeather = async () => {
+    // OpenWeatherMap API key (replace with your own API key)
+    const apiKey = 'YOUR_API_KEY';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+    try {
+      // Fetch weather data from the API
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        Alert.alert('Error', 'City not found or API error!');
+        return;
+      }
+      const data = await response.json();
+
+      // Set weather data to state
+      setWeather({
+        temperature: data.main.temp,
+        description: data.weather[0].description,
+        humidity: data.main.humidity,
+        city: data.name,
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong. Please try again!');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Weather App</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter city name"
+        value={city}
+        onChangeText={setCity}
+      />
+      <Button title="Get Weather" onPress={fetchWeather} />
+
+      {weather && (
+        <View style={styles.weatherInfo}>
+          <Text style={styles.weatherText}>City: {weather.city}</Text>
+          <Text style={styles.weatherText}>Temperature: {weather.temperature}°C</Text>
+          <Text style={styles.weatherText}>Description: {weather.description}</Text>
+          <Text style={styles.weatherText}>Humidity: {weather.humidity}%</Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+});
