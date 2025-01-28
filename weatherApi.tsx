@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert, ActivityIndicator } from 'react-native';
 
 // WeatherApp Component
 export default function WeatherApp() {
   // State to hold the user-inputted city name
   const [city, setCity] = useState('');
-
   // State to store weather data fetched from the API
   const [weather, setWeather] = useState(null);
+  // State to manage loading status
+  const [loading, setLoading] = useState(false);
 
   // Function to fetch weather data from OpenWeatherMap API
   const fetchWeather = async () => {
     // OpenWeatherMap API key (replace 'YOUR_API_KEY' with your actual API key)
     const apiKey = 'YOUR_API_KEY';
+    // Check if the city input is empty
+    if (!city.trim()) {
+      Alert.alert('Error', 'Please enter a city name!');
+      return;
+    }
     // Construct the API URL with the city name and API key
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+    setLoading(true); // Set loading state to true
 
     try {
       // Make an API call to fetch weather data
@@ -23,6 +31,7 @@ export default function WeatherApp() {
       // Check if the response is valid; if not, alert the user
       if (!response.ok) {
         Alert.alert('Error', 'City not found or API error!');
+        setLoading(false); // Reset loading state
         return;
       }
 
@@ -39,6 +48,8 @@ export default function WeatherApp() {
     } catch (error) {
       // Alert the user if there's an error in the API call
       Alert.alert('Error', 'Something went wrong. Please try again!');
+    } finally {
+      setLoading(false); // Reset loading state after fetching
     }
   };
 
@@ -58,6 +69,9 @@ export default function WeatherApp() {
 
       {/* Button to trigger weather data fetch */}
       <Button title="Get Weather" onPress={fetchWeather} />
+
+      {/* Show loading indicator when fetching data */}
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
       {/* Display the fetched weather information if available */}
       {weather && (
