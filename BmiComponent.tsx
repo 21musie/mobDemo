@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert, ActivityIndicator } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ThemedView } from '@/components/ThemedView'; // Importing a themed view component for consistent styling
 
 export default function BMICalculator() {
-  // State variables to hold weight, height, calculated BMI, and loading status
+  // State variables to hold weight, height, and the calculated BMI
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
   const [bmi, setBmi] = useState(null);
@@ -11,10 +11,7 @@ export default function BMICalculator() {
 
   // Function to calculate BMI based on user input
   const calculateBMI = () => {
-    // Resetting BMI result when inputs are changed
     setBmi(null);
-
-    // Convert weight and height from strings to numbers
     const weightNumber = parseFloat(weight);
     const heightNumber = parseFloat(height);
 
@@ -24,14 +21,9 @@ export default function BMICalculator() {
       return;
     }
 
-    // Set loading to true while calculating BMI
     setLoading(true);
-
-    // Calculate BMI using the formula: weight / (height * height)
     const calculatedBMI = weightNumber / (heightNumber * heightNumber);
-    // Set the calculated BMI to state, formatted to two decimal places
     setBmi(calculatedBMI.toFixed(2));
-    // Reset loading after calculation
     setLoading(false);
   };
 
@@ -40,24 +32,27 @@ export default function BMICalculator() {
       <Text style={styles.title}>BMI Calculator</Text>
       <TextInput
         style={styles.input}
-        placeholder="Weight (kg)" // Placeholder text for weight input
-        keyboardType="numeric" // Numeric keyboard for weight input
-        value={weight} // Controlled component for weight
-        onChangeText={setWeight} // Update weight state on input change
+        placeholder="Weight (kg)"
+        keyboardType="numeric"
+        value={weight}
+        onChangeText={setWeight}
       />
       <TextInput
         style={styles.input}
-        placeholder="Height (m)" // Placeholder text for height input
-        keyboardType="numeric" // Numeric keyboard for height input
-        value={height} // Controlled component for height
-        onChangeText={setHeight} // Update height state on input change
+        placeholder="Height (m)"
+        keyboardType="numeric"
+        value={height}
+        onChangeText={setHeight}
       />
-      <Button title="Calculate BMI" onPress={calculateBMI} /> {/* Button to trigger BMI calculation */}
-      {loading && <ActivityIndicator size="large" color="#0000ff" />} {/* Loading indicator */}
+      <TouchableOpacity style={styles.button} onPress={calculateBMI}>
+        <Text style={styles.buttonText}>Calculate BMI</Text>
+      </TouchableOpacity>
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       {bmi && (
-        <Text style={styles.result}>
-          Your BMI is: {bmi} {/* Display the calculated BMI */}
-        </Text>
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>Your BMI is:</Text>
+          <Text style={styles.resultValue}>{bmi}</Text>
+        </View>
       )}
     </ThemedView>
   );
@@ -66,28 +61,55 @@ export default function BMICalculator() {
 // Styles for the component
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Take full height of the screen
-    justifyContent: 'center', // Center content vertically
-    padding: 16, // Padding around the container
-    backgroundColor: '#A1CEDC', // Light background color
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#A1CEDC',
   },
   title: {
-    fontSize: 24, // Font size for the title
-    fontWeight: 'bold', // Bold text for the title
-    marginBottom: 16, // Space below the title
-    textAlign: 'center', // Center text alignment
+    fontSize: 28, // Increased size for better visibility
+    fontWeight: 'bold',
+    marginBottom: 24,
+    textAlign: 'center',
+    color: '#2C3E50', // Darker color for contrast
   },
   input: {
-    height: 50, // Height of the input fields
-    borderColor: 'gray', // Border color for input fields
-    borderWidth: 1, // Border width for input fields
-    marginBottom: 16, // Space below the input fields
-    paddingHorizontal: 8, // Padding inside input fields
-    borderRadius: 5, // Rounded corners for input fields
+    height: 50,
+    borderColor: '#34495E', // Darker border for better visibility
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF', // White background for input fields
+    elevation: 2, // Shadow for input fields
   },
-  result: {
-    marginTop: 20, // Space above the result text
-    fontSize: 18, // Font size for the result text
-    textAlign: 'center', // Center text alignment
+  button: {
+    backgroundColor: '#2980B9', // Button color
+    paddingVertical: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF', // White text for button
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  resultContainer: {
+    marginTop: 20,
+    padding: 16,
+    backgroundColor: '#D9E8F5',
+    borderRadius: 8,
+    alignItems: 'center',
+    elevation: 3, // Shadow for the result box
+  },
+  resultText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+  },
+  resultValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2980B9',
   },
 });
