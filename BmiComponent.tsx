@@ -1,29 +1,38 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Platform } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert, ActivityIndicator } from 'react-native';
 import { ThemedView } from '@/components/ThemedView'; // Importing a themed view component for consistent styling
 
 export default function BMICalculator() {
-  // State variables to hold weight, height, and the calculated BMI
+  // State variables to hold weight, height, calculated BMI, and loading status
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
   const [bmi, setBmi] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Function to calculate BMI based on user input
   const calculateBMI = () => {
+    // Resetting BMI result when inputs are changed
+    setBmi(null);
+
     // Convert weight and height from strings to numbers
     const weightNumber = parseFloat(weight);
     const heightNumber = parseFloat(height);
 
-    // Check if weight and height are valid numbers greater than zero
-    if (weightNumber > 0 && heightNumber > 0) {
-      // Calculate BMI using the formula: weight / (height * height)
-      const calculatedBMI = weightNumber / (heightNumber * heightNumber);
-      // Set the calculated BMI to state, formatted to two decimal places
-      setBmi(calculatedBMI.toFixed(2));
-    } else {
-      // Alert user if input values are invalid
-      alert('Please enter valid weight and height!');
+    // Validate input
+    if (isNaN(weightNumber) || isNaN(heightNumber) || weightNumber <= 0 || heightNumber <= 0) {
+      Alert.alert('Input Error', 'Please enter valid weight and height greater than zero!');
+      return;
     }
+
+    // Set loading to true while calculating BMI
+    setLoading(true);
+
+    // Calculate BMI using the formula: weight / (height * height)
+    const calculatedBMI = weightNumber / (heightNumber * heightNumber);
+    // Set the calculated BMI to state, formatted to two decimal places
+    setBmi(calculatedBMI.toFixed(2));
+    // Reset loading after calculation
+    setLoading(false);
   };
 
   return (
@@ -44,6 +53,7 @@ export default function BMICalculator() {
         onChangeText={setHeight} // Update height state on input change
       />
       <Button title="Calculate BMI" onPress={calculateBMI} /> {/* Button to trigger BMI calculation */}
+      {loading && <ActivityIndicator size="large" color="#0000ff" />} {/* Loading indicator */}
       {bmi && (
         <Text style={styles.result}>
           Your BMI is: {bmi} {/* Display the calculated BMI */}
